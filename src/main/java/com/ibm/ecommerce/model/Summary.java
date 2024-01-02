@@ -1,12 +1,34 @@
 package com.ibm.ecommerce.model;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "summary")
 public class Summary {
-  
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Column(name = "summary_id")
   private Integer id;
+  @Column(name = "summary_name")
   private String name;
+  @Column(name = "summary_cantity")
   private double cantity;
+  @Column(name = "summary_price")
   private double price;
+  @Column(name = "summary_total")
   private double total;
+
+  @OneToOne
+  private Order order;
+  @ManyToOne
+  private Product product;
 
   public Summary() {
   }
@@ -57,6 +79,22 @@ public class Summary {
 
   public void setTotal(double total) {
     this.total = total;
+  }
+
+  public Order getOrder() {
+    return order;
+  }
+
+  public void setOrder(Order order) {
+    this.order = order;
+  }
+
+  public Product getProduct() {
+    return product;
+  }
+
+  public void setProduct(Product product) {
+    this.product = product;
   }
 
   @Override

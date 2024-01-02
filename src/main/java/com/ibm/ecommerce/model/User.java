@@ -1,14 +1,40 @@
 package com.ibm.ecommerce.model;
 
-public class User {
+import java.util.List;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
+@Entity
+@Table(name = "users")
+public class User {
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Column(name = "user_id")
   private Integer id;
+  @Column(name = "user_fullName")
   private String name;
+  @Column(name = "user_alias")
   private String username;
+  @Column(name = "user_email")
   private String email;
+  @Column(name = "user_password")
   private String password;
+
   // Para los dos diferentes tipos de usuario que pueda existir: ADMIN / Normal
+  @Column(name = "user_type")
   private String typeUser;
+
+  // Campo mapeado a la variable dentro de Product
+  @OneToMany(mappedBy = "user")
+  private List<Product> productList;
+
+  @OneToMany(mappedBy = "user")
+  private List<Order> orderList;
 
   public User() {
   }
@@ -69,6 +95,22 @@ public class User {
 
   public void setTypeUser(String typeUser) {
     this.typeUser = typeUser;
+  }
+
+  public List<Product> getProductList() {
+    return productList;
+  }
+
+  public void setProductList(List<Product> productList) {
+    this.productList = productList;
+  }
+
+  public List<Order> getOrderList() {
+    return orderList;
+  }
+
+  public void setOrderList(List<Order> orderList) {
+    this.orderList = orderList;
   }
 
   @Override

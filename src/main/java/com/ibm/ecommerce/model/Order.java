@@ -1,14 +1,36 @@
 package com.ibm.ecommerce.model;
 
 import java.util.Date;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
 
+@Entity
+@Table(name = "orders")
 public class Order {
 
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Column(name = "order_id")
   private Integer id;
+  @Column(name = "order_numberOrder")
   private String numberOrder;
+  @Column(name = "order_creationDate")
   private Date creationDate;
+  @Column(name = "order_receivedDate")
   private Date receivedDate;
+  @Column(name = "order_total")
   private double total;
+
+  @ManyToOne
+  private User user;
+  @OneToOne(mappedBy = "order")
+  private Summary summary;
 
   public Order() {
   }
@@ -59,6 +81,22 @@ public class Order {
 
   public void setTotal(double total) {
     this.total = total;
+  }
+
+  public User getUser() {
+    return user;
+  }
+
+  public void setUser(User user) {
+    this.user = user;
+  }
+
+  public Summary getSummary() {
+    return summary;
+  }
+
+  public void setSummary(Summary summary) {
+    this.summary = summary;
   }
 
   @Override
