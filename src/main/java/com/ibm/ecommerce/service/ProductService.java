@@ -1,6 +1,7 @@
 package com.ibm.ecommerce.service;
 
 import com.ibm.ecommerce.model.Product;
+import java.util.List;
 import java.util.Optional;
 
 public interface ProductService {
@@ -9,5 +10,6 @@ public interface ProductService {
   Optional<Product> get(Integer id); //Para validar si el producto que se llama de la Base de Datos existe o no.
   void update(Product product);
   void delete(Integer id);
+  List<Product> findAll();
 
 }
