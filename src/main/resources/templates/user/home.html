@@ -39,8 +39,10 @@
       <div class="row text-center">
 
         <div class="col-lg-3 col-md-6 mb-4" th:each="product: ${productList}">
-          <div class="card h-100">
-            <img class="card-img-top" th:src="@{/images/{img}  (img=${product.image})}" alt="Imagen del producto">
+          <div class="card h-100" th:href="@{/show_product/{id}  (id=${product.id})} ">
+            <a th:href="@{/show_product/{id}  (id=${product.id})} ">
+              <img class="card-img-top" th:src="@{/images/{img}  (img=${product.image})}" alt="Imagen del producto">
+            </a>
             <div class="card-body">
               <p class="card-text" th:text="${product.name}">Nombre del producto.</p>
             </div>
