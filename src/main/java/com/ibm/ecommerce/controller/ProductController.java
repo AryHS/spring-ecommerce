@@ -2,7 +2,6 @@ package com.ibm.ecommerce.controller;
 
 import com.ibm.ecommerce.model.Product;
 import com.ibm.ecommerce.model.User;
-import com.ibm.ecommerce.service.ProductService;
 import com.ibm.ecommerce.service.ProductServiceImpl;
 import com.ibm.ecommerce.service.UploadFileService;
 import java.io.IOException;
