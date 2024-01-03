@@ -7,6 +7,7 @@ import com.ibm.ecommerce.service.ProductServiceImpl;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Stream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,14 +51,29 @@ public class HomeController {
   }
 
   @PostMapping("/cart")
-  public String addCart(@RequestParam Integer id, @RequestParam Integer cantity){
+  public String addCart(@RequestParam Integer id, @RequestParam Integer cantity, Model model){
     Summary summary = new Summary();
-    Product product = new Product();
+    Product product;
     double total = 0;
 
     Optional<Product> productOptional = productService.get(id);
     LOGGER.info("Producto añadido: {}", productOptional.get());
     LOGGER.info("Cantidad: {}", cantity);
+    product = productOptional.get();
+
+    summary.setCantity(cantity);
+    summary.setPrice(product.getPrice());
+    summary.setName(product.getName());
+    summary.setTotal(product.getPrice()*cantity);
+    summary.setProduct(product);
+
+    summaryList.add(summary);
+
+    total = summaryList.stream().mapToDouble(Summary::getTotal).sum();
+
+    order.setTotal(total);
+    model.addAttribute("cart", summaryList);
+    model.addAttribute("order", order);
 
     return "user/cart";
   }
