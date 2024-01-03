@@ -54,12 +54,12 @@
                 </tr>
               </thead>
               <tbody>
-                <tr th:each="dorder:${cart}">
-                  <td th:text="${dorder.name}">Nombre</td>
-                  <td th:text="${dorder.price}">Precio</td>
-                  <td th:text="${dorder.cantity}">Cantidad</td>
-                  <td th:text="${dorder.total}">Total</td>
-                  <td><a href="#" class="btn btn-danger">Quitar</a></td>
+                <tr th:each="s_order:${cart}">
+                  <td th:text="${s_order.name}">Nombre</td>
+                  <td th:text="${s_order.price}">Precio</td>
+                  <td th:text="${s_order.cantity}">Cantidad</td>
+                  <td th:text="${s_order.total}">Total</td>
+                  <td><a th:href="@{/delete/cart/{id}  (id=${s_order.product.id}) }" class="btn btn-danger">Quitar</a></td>
                 </tr>
               </tbody>
             </table>
