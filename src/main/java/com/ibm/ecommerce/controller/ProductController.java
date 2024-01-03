@@ -52,17 +52,7 @@ public class ProductController {
     if(product.getId() == null) { //Validación cuando se crea un producto el id va null
       String nameImage = upload.saveImage(file);
       product.setImage(nameImage);
-    }else {
-      if(file.isEmpty()) { //Validación cuando se edita el producto y NO se carga nueva imagen
-        Product productLoaded = new Product();
-        productLoaded = productService.get(product.getId()).get();
-        product.setImage(productLoaded.getImage());
-      } else {
-        String nameImage = upload.saveImage(file);
-        product.setImage(nameImage);
-      }
     }
-
     productService.save(product);
     return "redirect:/products";
   }
@@ -81,13 +71,35 @@ public class ProductController {
   }
 
   @PostMapping("/update")
-  public String update(Product product) {
+  public String update(Product product, @RequestParam("img") MultipartFile file) throws IOException{
+    Product productLoaded;
+    if(file.isEmpty()) { //Validación cuando se edita el producto y NO se carga nueva imagen
+      productLoaded = productService.get(product.getId()).get();
+      product.setImage(productLoaded.getImage());
+    } else { // Validación cuando se edita el producto y SI se carga nueva imagen
+      productLoaded = productService.get(product.getId()).get();
+      // Para eliminar la imagen siempre y cuando no sea la de default
+      if(!productLoaded.getImage().equals("default.jpg")) {
+        upload.deleteImage(productLoaded.getImage());
+      }
+
+      String nameImage = upload.saveImage(file);
+      product.setImage(nameImage);
+    }
+
+    product.setUser(productLoaded.getUser());
     productService.update(product);
     return "redirect:/products";
   }
 
   @GetMapping("/delete/{id}")
   public String delete(@PathVariable Integer id) {
+    Product productLoaded;
+    productLoaded = productService.get(id).get();
+    // Para eliminar la imagen siempre y cuando no sea la de default
+    if(!productLoaded.getImage().equals("default.jpg")) {
+      upload.deleteImage(productLoaded.getImage());
+    }
     productService.delete(id);
     return "redirect:/products";
   }
