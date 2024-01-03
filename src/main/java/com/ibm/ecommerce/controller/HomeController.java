@@ -30,8 +30,12 @@ public class HomeController {
     return "user/home";
   }
   @GetMapping("show_product/{id}")
-  public String showProduct(@PathVariable Integer id){
+  public String showProduct(@PathVariable Integer id, Model model){
     LOGGER.info("Id producto enviado como parámetro {}", id);
+    Product product = productService.get(id).get();
+
+    model.addAttribute("product", product);
+
     return "user/show_product";
   }
 }
