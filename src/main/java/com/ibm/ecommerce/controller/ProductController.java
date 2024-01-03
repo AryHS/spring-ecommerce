@@ -3,6 +3,7 @@ package com.ibm.ecommerce.controller;
 import com.ibm.ecommerce.model.Product;
 import com.ibm.ecommerce.model.User;
 import com.ibm.ecommerce.service.ProductService;
+import com.ibm.ecommerce.service.ProductServiceImpl;
 import com.ibm.ecommerce.service.UploadFileService;
 import java.io.IOException;
 import java.util.Optional;
@@ -24,7 +25,7 @@ public class ProductController {
   private final Logger LOGGER = LoggerFactory.getLogger(ProductController.class);
 
   @Autowired
-  private ProductService productService;
+  private ProductServiceImpl productService;
 
   @Autowired
   private UploadFileService upload;
