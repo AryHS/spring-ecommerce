@@ -6,4 +6,5 @@ import java.util.List;
 public interface IOrderService {
   Order save(Order order);
   List<Order> findAll();
+  String generateIdOrder();
 }

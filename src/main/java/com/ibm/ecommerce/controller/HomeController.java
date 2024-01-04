@@ -4,9 +4,12 @@ import com.ibm.ecommerce.model.Order;
 import com.ibm.ecommerce.model.Product;
 import com.ibm.ecommerce.model.Summary;
 import com.ibm.ecommerce.model.User;
+import com.ibm.ecommerce.service.order.IOrderService;
+import com.ibm.ecommerce.service.order.ISummaryService;
 import com.ibm.ecommerce.service.product.ProductService;
 import com.ibm.ecommerce.service.user.IUserService;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import org.slf4j.Logger;
@@ -28,9 +31,12 @@ public class HomeController {
 
   @Autowired
   private ProductService productService;
-
   @Autowired
   private IUserService userService;
+  @Autowired
+  private IOrderService orderService;
+  @Autowired
+  private ISummaryService summaryService;
 
 
   //Para guardar los detalles del carrito
@@ -49,7 +55,7 @@ public class HomeController {
 
     return "user/home";
   }
-  @GetMapping("show_product/{id}")
+  @GetMapping("showProduct/{id}")
   public String showProduct(@PathVariable Integer id, Model model){
     LOGGER.info("Id producto enviado como parámetro {}", id);
     Product product = productService.get(id).get();
@@ -136,5 +142,31 @@ public class HomeController {
     model.addAttribute("user", user);
 
     return "user/summary_order";
+  }
+
+  // Método para guardar la orden de Compra
+  @GetMapping("/saveOrder")
+  public String saveOrder() {
+    Date created = new Date();
+    order.setCreationDate(created);
+    order.setNumberOrder(orderService.generateIdOrder());
+
+    // Guardar usuario en la orden
+    User user = userService.findById(1).get();
+    order.setUser(user);
+
+    orderService.save(order);
+
+    // Guardar Detalles de compra
+    for(Summary s:summaryList) {
+      s.setOrder(order);
+      summaryService.save(s);
+    }
+
+    //Limpiar la lista y orden para nueva compra
+    order = new Order();
+    summaryList.clear();
+
+    return "redirect:/";
   }
 }
