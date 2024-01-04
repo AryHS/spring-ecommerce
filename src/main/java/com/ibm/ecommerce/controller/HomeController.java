@@ -51,9 +51,11 @@ public class HomeController {
     LOGGER.info("Sesión del usuario: {}", session.getAttribute("idUser"));
 
     model.addAttribute("productList", productService.findAll());
-
-    LOGGER.info("Tamaño de la lista del Carrito: {}", summaryList.size());
     model.addAttribute("cart", summaryList);
+    LOGGER.info("Tamaño de la lista del Carrito: {}", summaryList.size());
+
+    //Session
+    model.addAttribute("session", session.getAttribute("idUSer"));
 
     return "user/home";
   }
@@ -126,9 +128,12 @@ public class HomeController {
   }
 
   @GetMapping("/getCart")
-  public String getCart(Model model){
+  public String getCart(Model model, HttpSession session){
     model.addAttribute("cart", summaryList);
     model.addAttribute("order", order);
+
+    //Session
+    model.addAttribute("session", session.getAttribute("idUser"));
 
     return "/user/cart";
   }
