@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,9 +50,7 @@ public class HomeController {
     List<Product> productList = productService.findAll();
     model.addAttribute("productList", productList);
     LOGGER.info("Tamaño de la lista del Carrito: {}", summaryList.size());
-    if(summaryList != null) {
-      model.addAttribute("cart", summaryList);
-    }
+    model.addAttribute("cart", summaryList);
 
     return "user/home";
   }
@@ -60,9 +59,7 @@ public class HomeController {
     LOGGER.info("Id producto enviado como parámetro {}", id);
     Product product = productService.get(id).get();
     model.addAttribute("product", product);
-    if(summaryList != null) {
-      model.addAttribute("cart", summaryList);
-    }
+    model.addAttribute("cart", summaryList);
 
     return "user/show_product";
   }
@@ -168,5 +165,17 @@ public class HomeController {
     summaryList.clear();
 
     return "redirect:/";
+  }
+
+  @PostMapping("/search")
+  public String searchProduct(@RequestParam String name, Model model){
+    LOGGER.info("Nombre del producto buscado: {}", name);
+    List<Product> productList = productService.findAll().stream().filter(p -> p.getName().contains(name)).collect(Collectors.toList());
+
+    model.addAttribute("cart", summaryList);
+    model.addAttribute("productList",productList);
+
+
+    return "user/home";
   }
 }
