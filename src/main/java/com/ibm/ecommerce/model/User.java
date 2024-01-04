@@ -24,6 +24,8 @@ public class User {
   private String email;
   @Column(name = "user_address")
   private String address;
+  @Column(name = "user_phone")
+  private String phone;
   @Column(name = "user_password")
   private String password;
 
@@ -41,13 +43,14 @@ public class User {
   public User() {
   }
 
-  public User(Integer id, String name, String username, String email, String address, String password,
+  public User(Integer id, String name, String username, String email, String address, String phone, String password,
       String typeUser) {
     this.id = id;
     this.name = name;
     this.username = username;
     this.email = email;
     this.address = address;
+    this.phone = phone;
     this.password = password;
     this.typeUser = typeUser;
   }
@@ -95,6 +98,14 @@ public class User {
     return password;
   }
 
+  public String getPhone() {
+    return phone;
+  }
+
+  public void setPhone(String phone) {
+    this.phone = phone;
+  }
+
   public void setPassword(String password) {
     this.password = password;
   }
@@ -131,6 +142,7 @@ public class User {
         ", username='" + username + '\'' +
         ", email='" + email + '\'' +
         ", address='" + address + '\'' +
+        ", phone='" + phone + '\'' +
         ", password='" + password + '\'' +
         ", typeUser='" + typeUser + '\'' +
         '}';

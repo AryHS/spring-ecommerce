@@ -45,7 +45,7 @@ public class ProductController {
   @PostMapping("/save")
   public String save(Product product, @RequestParam("img") MultipartFile file) throws IOException {
     LOGGER.info("Este es el objeto producto {}", product);
-    User user = new User(1, "", "", "", "", "", "");
+    User user = new User(1, "", "", "", "", "", "", "");
     product.setUser(user);
 
     //Image
