@@ -2,8 +2,8 @@ package com.ibm.ecommerce.controller;
 
 import com.ibm.ecommerce.model.Product;
 import com.ibm.ecommerce.model.User;
-import com.ibm.ecommerce.service.ProductServiceImpl;
-import com.ibm.ecommerce.service.UploadFileService;
+import com.ibm.ecommerce.service.product.ProductService;
+import com.ibm.ecommerce.service.product.UploadFileService;
 import java.io.IOException;
 import java.util.Optional;
 import org.slf4j.*;
@@ -24,7 +24,7 @@ public class ProductController {
   private final Logger LOGGER = LoggerFactory.getLogger(ProductController.class);
 
   @Autowired
-  private ProductServiceImpl productService;
+  private ProductService productService;
 
   @Autowired
   private UploadFileService upload;
@@ -45,7 +45,7 @@ public class ProductController {
   @PostMapping("/save")
   public String save(Product product, @RequestParam("img") MultipartFile file) throws IOException {
     LOGGER.info("Este es el objeto producto {}", product);
-    User user = new User(1, "", "", "", "", "");
+    User user = new User(1, "", "", "", "", "", "");
     product.setUser(user);
 
     //Image

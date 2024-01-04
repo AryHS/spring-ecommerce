@@ -1,4 +1,4 @@
-package com.ibm.ecommerce.service;
+package com.ibm.ecommerce.service.product;
 
 import com.ibm.ecommerce.model.Product;
 import java.util.List;

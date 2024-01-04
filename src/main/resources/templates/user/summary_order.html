@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
 
 <head>
 
@@ -12,42 +12,17 @@
 
 
   <!-- Bootstrap core CSS -->
-  <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link th:href="@{/vendor/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
 
   <!-- Custom styles for this template -->
-  <link href="css/heroic-features.css" rel="stylesheet">
+  <link th:href="@{/css/heroic-features.css}" rel="stylesheet">
 
 </head>
 
 <body>
 
   <!-- Navigation -->
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
-    <div class="container">
-      <a class="navbar-brand" href="#">Spring eCommerce</a>
-
-      <form class="form-inline my-2 my-lg-0" method="post"
-      action="#">
-      <input class="form-control mr-sm-2" type="search"
-      placeholder="Buscar" aria-label="Search" name="nombre"
-      autocomplete="off">
-      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Buscar</button>
-    </form>
-
-
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarResponsive">
-      <ul class="navbar-nav ml-auto">
-        <li class="nav-item"><a class="nav-link"
-          href="carrito.html">Carrito</a></li>
-          <li class="nav-item"><a class="nav-link"
-            href="login.html">Login</a></li>
-          </ul>
-        </div>
-      </div>
-    </nav>
+  <div th:include="user/template_user.html::header"></div>
 
     <!-- Page Content -->
     <div class="container">
@@ -59,7 +34,7 @@
       </h1>
 
       <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+        <li class="breadcrumb-item"><a th:href="@{/}">Home</a></li>
         <li class="breadcrumb-item active">Orden</li>
       </ol>
 
@@ -72,9 +47,9 @@
               <h5 class="card-title">
                 DATOS ORDEN
               </h5>
-              <h6>Nombre: </h6>
-              <h6 >Correo: </h6>
-              <h6 >Dirección</h6>
+              <h6 th:text="'Nombre: '+${user.name}"></h6>
+              <h6 th:text="'Correo: '+${user.email}"></h6>
+              <h6 th:text="'Dirección: '+${user.address}"></h6>
 
               <h5 class="card-title">
                 PRODUCTOS
@@ -90,11 +65,11 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr>
-                     <td >Nombre</td>
-                     <td >Precio</td>
-                     <td>Cantidad</td>
-                     <td >Total</td>
+                    <tr th:each="s_order:${cart}">
+                     <td th:text="${s_order.name}">Nombre</td>
+                     <td th:text="${s_order.price}">Precio</td>
+                     <td th:text="${s_order.cantity}">Cantidad</td>
+                     <td th:text="${s_order.total}">Total</td>
 
                    </tr>
                  </tbody>
@@ -109,26 +84,22 @@
           <h2 class="card-title">Resumen Orden</h2>
 
           <ul class="list-group">
-            <li class="list-group-item"><h5> Total:</h5></li>
+            <li class="list-group-item"><h5 th:text="'Total: '+${order.total}"></h5></li>
             <a href="#" class="btn btn-dark">Generar</a>
           </ul>
         </div>
       </div>
     </div>
-  </div>
+    </div>
+    </div>
   <!-- /.container -->
 
   <!-- Footer -->
-  <footer class="py-5 bg-dark">
-    <div class="container">
-      <p class="m-0 text-center text-white">Copyright &copy; Spring eCommerce 2020</p>
-    </div>
-    <!-- /.container -->
-  </footer>
+  <div th:include="user/template_user.html::footer"></div>
 
   <!-- Bootstrap core JavaScript -->
-  <script src="vendor/jquery/jquery.min.js"></script>
-  <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script th:src="@{/vendor/jquery/jquery.min.js}"></script>
+  <script th:src="@{/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
 
 </body>
 

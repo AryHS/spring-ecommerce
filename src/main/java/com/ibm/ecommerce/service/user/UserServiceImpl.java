@@ -1,16 +1,16 @@
-package com.ibm.ecommerce.service;
+package com.ibm.ecommerce.service.user;
 
 import com.ibm.ecommerce.model.User;
-import com.ibm.ecommerce.repository.UserRepository;
+import com.ibm.ecommerce.repository.IUserRepository;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class UsuarioServiceImpl implements UserService{
+public class UserServiceImpl implements IUserService {
 
   @Autowired
-  private UserRepository userRepository;
+  private IUserRepository userRepository;
 
   @Override
   public Optional<User> findById(Integer id) {

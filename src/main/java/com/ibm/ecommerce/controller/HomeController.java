@@ -3,11 +3,12 @@ package com.ibm.ecommerce.controller;
 import com.ibm.ecommerce.model.Order;
 import com.ibm.ecommerce.model.Product;
 import com.ibm.ecommerce.model.Summary;
-import com.ibm.ecommerce.service.ProductServiceImpl;
+import com.ibm.ecommerce.model.User;
+import com.ibm.ecommerce.service.product.ProductService;
+import com.ibm.ecommerce.service.user.IUserService;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Stream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +27,11 @@ public class HomeController {
   private final Logger LOGGER = LoggerFactory.getLogger(HomeController.class);
 
   @Autowired
-  private ProductServiceImpl productService;
+  private ProductService productService;
+
+  @Autowired
+  private IUserService userService;
+
 
   //Para guardar los detalles del carrito
   List<Summary> summaryList = new ArrayList<Summary>();
@@ -37,6 +42,10 @@ public class HomeController {
   public String home(Model model){
     List<Product> productList = productService.findAll();
     model.addAttribute("productList", productList);
+    LOGGER.info("Tamaño de la lista del Carrito: {}", summaryList.size());
+    if(summaryList != null) {
+      model.addAttribute("cart", summaryList);
+    }
 
     return "user/home";
   }
@@ -44,8 +53,10 @@ public class HomeController {
   public String showProduct(@PathVariable Integer id, Model model){
     LOGGER.info("Id producto enviado como parámetro {}", id);
     Product product = productService.get(id).get();
-
     model.addAttribute("product", product);
+    if(summaryList != null) {
+      model.addAttribute("cart", summaryList);
+    }
 
     return "user/show_product";
   }
@@ -114,5 +125,16 @@ public class HomeController {
     model.addAttribute("order", order);
 
     return "/user/cart";
+  }
+
+  @GetMapping("/order")
+  public String viewOrder(Model model) {
+    User user = userService.findById(1).get();
+
+    model.addAttribute("cart", summaryList);
+    model.addAttribute("order", order);
+    model.addAttribute("user", user);
+
+    return "user/summary_order";
   }
 }

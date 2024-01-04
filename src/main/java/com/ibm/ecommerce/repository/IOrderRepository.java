@@ -1,10 +1,10 @@
 package com.ibm.ecommerce.repository;
 
-import com.ibm.ecommerce.model.Product;
+import com.ibm.ecommerce.model.Order;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface ProductRepository extends JpaRepository<Product, Integer> {
+public interface IOrderRepository extends JpaRepository<Order, Integer> {
 
 }

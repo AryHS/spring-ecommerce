@@ -1,4 +1,4 @@
-package com.ibm.ecommerce.service;
+package com.ibm.ecommerce.service.product;
 
 import java.io.IOException;
 import java.io.File;

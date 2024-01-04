@@ -1,7 +1,7 @@
-package com.ibm.ecommerce.service;
+package com.ibm.ecommerce.service.product;
 
 import com.ibm.ecommerce.model.Product;
-import com.ibm.ecommerce.repository.ProductRepository;
+import com.ibm.ecommerce.repository.IProductRepository;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,30 +11,30 @@ import org.springframework.stereotype.Service;
 public class ProductServiceImpl implements ProductService{
 
   @Autowired
-  private ProductRepository productRepository;
+  private IProductRepository IProductRepository;
 
   @Override
   public Product save(Product product) {
-    return productRepository.save(product);
+    return IProductRepository.save(product);
   }
 
   @Override
   public Optional<Product> get(Integer id) {
-    return productRepository.findById(id);
+    return IProductRepository.findById(id);
   }
 
   @Override
   public void update(Product product) {
-    productRepository.save(product);
+    IProductRepository.save(product);
   }
 
   @Override
   public void delete(Integer id) {
-    productRepository.deleteById(id);
+    IProductRepository.deleteById(id);
   }
 
   @Override
   public List<Product> findAll() {
-    return productRepository.findAll();
+    return IProductRepository.findAll();
   }
 }
