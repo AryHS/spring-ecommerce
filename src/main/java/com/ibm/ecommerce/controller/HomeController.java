@@ -67,7 +67,13 @@ public class HomeController {
     summary.setTotal(product.getPrice()*cantity);
     summary.setProduct(product);
 
-    summaryList.add(summary);
+    //Validación para agregar solo una vez cada producto al carrito
+    Integer idProduct = product.getId();
+    boolean isAdded = summaryList.stream().anyMatch(p -> p.getProduct().getId() == idProduct);
+
+    if(!isAdded) {
+      summaryList.add(summary);
+    }
 
     total = summaryList.stream().mapToDouble(Summary::getTotal).sum();
 
@@ -100,5 +106,13 @@ public class HomeController {
     model.addAttribute("order", order);
 
     return "user/cart";
+  }
+
+  @GetMapping("/getCart")
+  public String getCart(Model model){
+    model.addAttribute("cart", summaryList);
+    model.addAttribute("order", order);
+
+    return "/user/cart";
   }
 }
