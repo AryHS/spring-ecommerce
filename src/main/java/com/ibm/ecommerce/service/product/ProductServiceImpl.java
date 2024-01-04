@@ -11,30 +11,30 @@ import org.springframework.stereotype.Service;
 public class ProductServiceImpl implements ProductService{
 
   @Autowired
-  private IProductRepository IProductRepository;
+  private IProductRepository productRepository;
 
   @Override
   public Product save(Product product) {
-    return IProductRepository.save(product);
+    return productRepository.save(product);
   }
 
   @Override
   public Optional<Product> get(Integer id) {
-    return IProductRepository.findById(id);
+    return productRepository.findById(id);
   }
 
   @Override
   public void update(Product product) {
-    IProductRepository.save(product);
+    productRepository.save(product);
   }
 
   @Override
   public void delete(Integer id) {
-    IProductRepository.deleteById(id);
+    productRepository.deleteById(id);
   }
 
   @Override
   public List<Product> findAll() {
-    return IProductRepository.findAll();
+    return productRepository.findAll();
   }
 }

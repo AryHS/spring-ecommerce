@@ -25,7 +25,7 @@ public class Summary {
   @Column(name = "summary_total")
   private double total;
 
-  @OneToOne
+  @ManyToOne
   private Order order;
   @ManyToOne
   private Product product;

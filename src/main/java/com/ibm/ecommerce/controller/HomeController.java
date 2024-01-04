@@ -13,6 +13,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import javax.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,9 +47,11 @@ public class HomeController {
   Order order = new Order();
 
   @GetMapping("")
-  public String home(Model model){
-    List<Product> productList = productService.findAll();
-    model.addAttribute("productList", productList);
+  public String home(Model model, HttpSession session){
+    LOGGER.info("Sesión del usuario: {}", session.getAttribute("idUser"));
+
+    model.addAttribute("productList", productService.findAll());
+
     LOGGER.info("Tamaño de la lista del Carrito: {}", summaryList.size());
     model.addAttribute("cart", summaryList);
 
@@ -131,8 +134,10 @@ public class HomeController {
   }
 
   @GetMapping("/order")
-  public String viewOrder(Model model) {
-    User user = userService.findById(1).get();
+  public String viewOrder(Model model, HttpSession session) {
+
+    //User user = userService.findById(1).get();
+    User user = userService.findById( Integer.parseInt(session.getAttribute("idUser").toString()) ).get();
 
     model.addAttribute("cart", summaryList);
     model.addAttribute("order", order);
@@ -143,15 +148,17 @@ public class HomeController {
 
   // Método para guardar la orden de Compra
   @GetMapping("/saveOrder")
-  public String saveOrder() {
+  public String saveOrder(HttpSession session) {
     Date created = new Date();
     order.setCreationDate(created);
     order.setNumberOrder(orderService.generateIdOrder());
 
-    // Guardar usuario en la orden
-    User user = userService.findById(1).get();
-    order.setUser(user);
 
+    // Guardar usuario en la orden
+    //User user = userService.findById(1).get();
+    User user = userService.findById( Integer.parseInt(session.getAttribute("idUser").toString()) ).get();
+
+    order.setUser(user);
     orderService.save(order);
 
     // Guardar Detalles de compra

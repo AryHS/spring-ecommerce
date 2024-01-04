@@ -4,8 +4,10 @@ import com.ibm.ecommerce.model.Product;
 import com.ibm.ecommerce.model.User;
 import com.ibm.ecommerce.service.product.ProductService;
 import com.ibm.ecommerce.service.product.UploadFileService;
+import com.ibm.ecommerce.service.user.IUserService;
 import java.io.IOException;
 import java.util.Optional;
+import javax.servlet.http.HttpSession;
 import org.slf4j.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -25,7 +27,8 @@ public class ProductController {
 
   @Autowired
   private ProductService productService;
-
+  @Autowired
+  private IUserService usuarioService;
   @Autowired
   private UploadFileService upload;
 
@@ -43,9 +46,10 @@ public class ProductController {
   }
 
   @PostMapping("/save")
-  public String save(Product product, @RequestParam("img") MultipartFile file) throws IOException {
+  public String save(Product product, @RequestParam("img") MultipartFile file, HttpSession session) throws IOException {
     LOGGER.info("Este es el objeto producto {}", product);
-    User user = new User(1, "", "", "", "", "", "", "");
+
+    User user = usuarioService.findById(Integer.parseInt(session.getAttribute("idUser").toString())).get();
     product.setUser(user);
 
     //Image

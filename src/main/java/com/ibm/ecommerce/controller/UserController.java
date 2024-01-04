@@ -38,12 +38,14 @@ public class UserController {
   public String login(){
     return "user/login";
   }
+
+
   @PostMapping("/signIn")
   public String signIn(User user, HttpSession session){
     LOGGER.info("Accesos: {}",user);
 
     Optional<User> userOptional = userService.findByEmail(user.getEmail());
-    //LOGGER.info("Usuario obtenido de db: {}",userOptional.get());
+    LOGGER.info("Usuario obtenido de db: {}",userOptional.get());
 
     if(userOptional.isPresent()){
       session.setAttribute("idUser", userOptional.get().getId());

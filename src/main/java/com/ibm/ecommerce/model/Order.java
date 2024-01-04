@@ -1,13 +1,14 @@
 package com.ibm.ecommerce.model;
 
 import java.util.Date;
+import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -29,8 +30,8 @@ public class Order {
 
   @ManyToOne
   private User user;
-  @OneToOne(mappedBy = "order")
-  private Summary summary;
+  @OneToMany(mappedBy = "order")
+  private List<Summary> summary;
 
   public Order() {
   }
@@ -91,11 +92,11 @@ public class Order {
     this.user = user;
   }
 
-  public Summary getSummary() {
+  public List<Summary> getSummary() {
     return summary;
   }
 
-  public void setSummary(Summary summary) {
+  public void setSummary(List<Summary> summary) {
     this.summary = summary;
   }
 
