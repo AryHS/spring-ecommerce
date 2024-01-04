@@ -2,6 +2,8 @@ package com.ibm.ecommerce.controller;
 
 import com.ibm.ecommerce.model.User;
 import com.ibm.ecommerce.service.user.IUserService;
+import java.util.Optional;
+import javax.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +30,32 @@ public class UserController {
     LOGGER.info("Usuario enviado: {}",user);
     user.setTypeUser("USER");
     userService.save(user);
+
+    return "redirect:/";
+  }
+
+  @GetMapping("/login")
+  public String login(){
+    return "user/login";
+  }
+  @PostMapping("/signIn")
+  public String signIn(User user, HttpSession session){
+    LOGGER.info("Accesos: {}",user);
+
+    Optional<User> userOptional = userService.findByEmail(user.getEmail());
+    //LOGGER.info("Usuario obtenido de db: {}",userOptional.get());
+
+    if(userOptional.isPresent()){
+      session.setAttribute("idUser", userOptional.get().getId());
+      if(userOptional.get().getTypeUser().equals("ADMIN")) {
+        return "redirect:/admin";
+      }else {
+        return "redirect:/";
+      }
+    }else {
+      LOGGER.info("Usuario no existe");
+    }
+
     return "redirect:/";
   }
 }
