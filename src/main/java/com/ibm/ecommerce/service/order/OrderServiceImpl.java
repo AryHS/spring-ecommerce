@@ -5,6 +5,7 @@ import com.ibm.ecommerce.model.User;
 import com.ibm.ecommerce.repository.IOrderRepository;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,12 @@ public class OrderServiceImpl implements IOrderService{
   public List<Order> findAll() {
     return orderRepository.findAll();
   }
+
+  @Override
+  public Optional<Order> findById(Integer id) {
+    return orderRepository.findById(id);
+  }
+
   public String generateIdOrder(){
     int number = 0;
     String parsedNumber = "";
@@ -40,7 +47,6 @@ public class OrderServiceImpl implements IOrderService{
     }
 
     parsedNumber = String.valueOf(number);
-
 
     return parsedNumber;
   }
