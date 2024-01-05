@@ -32,7 +32,7 @@ public class UserDetailServiceImpl implements UserDetailsService {
   //Para cargar el usuario a través del email en la variable username
   @Override
   public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-    LOGGER.info("Este es el username");
+    //LOGGER.info("Este es el username");
     Optional<User> optionalUser = userService.findByEmail(username);
 
     if(optionalUser.isPresent()){

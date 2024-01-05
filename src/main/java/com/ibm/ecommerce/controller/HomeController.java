@@ -56,25 +56,30 @@ public class HomeController {
 
     //Session que se envía a la vista home. Se usa la variable 'sesion' para evitar conflictos
     model.addAttribute("sesion", session.getAttribute("idUser"));
-    LOGGER.info("Sesión del usuario: {}", session.getAttribute("idUser"));
+    //LOGGER.info("Sesión del usuario: {}", session.getAttribute("idUser"));
 
     return "user/home";
   }
   @GetMapping("showProduct/{id}")
-  public String showProduct(@PathVariable Integer id, Model model){
+  public String showProduct(@PathVariable Integer id, Model model, HttpSession session){
     //LOGGER.info("Id producto enviado como parámetro {}", id);
     Product product = productService.get(id).get();
     model.addAttribute("product", product);
     model.addAttribute("cart", summaryList);
+    model.addAttribute("sesion", session.getAttribute("idUser"));
 
     return "user/show_product";
   }
 
   @PostMapping("/cart")
-  public String addCart(@RequestParam Integer id, @RequestParam Integer cantity, Model model){
+  public String addCart(@RequestParam Integer id, @RequestParam Integer cantity, Model model,
+      HttpSession session){
+
     Summary summary = new Summary();
     Product product;
     double total = 0;
+
+    model.addAttribute("sesion", session.getAttribute("idUser"));
 
     Optional<Product> productOptional = productService.get(id);
     //LOGGER.info("Producto añadido: {}", productOptional.get());
@@ -101,12 +106,14 @@ public class HomeController {
     model.addAttribute("cart", summaryList);
     model.addAttribute("order", order);
 
+
+
     return "user/cart";
   }
 
   //Método para eliminar un producto del carrito de Compras
   @GetMapping("/delete/cart/{id}")
-  public String deleteProductCart(@PathVariable Integer id, Model model){
+  public String deleteProductCart(@PathVariable Integer id, Model model, HttpSession session){
 
     //Lista auxiliar para conservar los demás elementos
     List<Summary> summaryListNew = new ArrayList<Summary>();
@@ -124,6 +131,7 @@ public class HomeController {
     order.setTotal(total);
     model.addAttribute("cart", summaryList);
     model.addAttribute("order", order);
+    model.addAttribute("sesion", session.getAttribute("idUser"));
 
     return "user/cart";
   }
@@ -148,6 +156,7 @@ public class HomeController {
     model.addAttribute("cart", summaryList);
     model.addAttribute("order", order);
     model.addAttribute("user", user);
+    model.addAttribute("sesion", session.getAttribute("idUser"));
 
     return "user/summary_order";
   }
@@ -181,14 +190,31 @@ public class HomeController {
   }
 
   @PostMapping("/search")
-  public String searchProduct(@RequestParam String name, Model model){
+  public String searchProduct(@RequestParam String name, Model model, HttpSession session){
     LOGGER.info("Nombre del producto buscado: {}", name);
-    List<Product> productList = productService.findAll().stream().filter(p -> p.getName().contains(name)).collect(Collectors.toList());
+
+    List<Product> productList =
+        productService.findAll().stream().filter(p -> p.getName().contains(name))
+            .collect(Collectors.toList());
 
     model.addAttribute("cart", summaryList);
     model.addAttribute("productList",productList);
+    model.addAttribute("sesion", session.getAttribute("idUser"));
 
+    if(session.getAttribute("idUser")!=null){
+      LOGGER.info("USUARIO: {}", session.getAttribute("idUser"));
+      Optional<User> userOptional =
+          userService.findById(Integer.parseInt(session.getAttribute("idUser").toString()));
+      if(userOptional.isPresent()){
+        LOGGER.info("SI HAY");
+        if(userOptional.get().getTypeUser().equals("ADMIN")){
+          LOGGER.info("ES ADMIN");
+          return "admin/home";
+        }
+      }
+    }
 
     return "user/home";
   }
+
 }

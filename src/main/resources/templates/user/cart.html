@@ -72,7 +72,13 @@
 
             <ul class="list-group">
               <li class="list-group-item"><h5 th:text="${order.total}"></h5></li>
-              <a th:href="@{/order}" class="btn btn-dark">Ver Orden</a>
+              <!-- Enlace para Iniciar Sesión -->
+              <a th:if="${sesion == null}" th:href="@{/user/login}" class="btn btn-dark">Iniciar Sesión</a>
+              <!-- Verificación de sesión y total de Orden -->
+              <a th:if="${sesion != null && order.total != 0.0}" th:href="@{/order}" class="btn btn-dark">Ver Orden</a>
+              <a th:if="${sesion != null && order.total == 0.0}" th:unless="${order.total != 0.0}" th:href="@{/}" class="btn btn-dark">Agregar Productos</a>
+
+
             </ul>
           </div>
 
