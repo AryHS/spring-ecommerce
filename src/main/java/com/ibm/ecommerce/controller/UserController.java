@@ -10,6 +10,7 @@ import javax.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,10 +18,16 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+/**
+ * UserController class.
+ */
 @Controller
 @RequestMapping("/user")
 public class UserController {
 
+  /**
+   * variable Logger.
+   */
   private final Logger LOGGER = LoggerFactory.getLogger(UserController.class);
   @Autowired
   private IUserService userService;
@@ -28,15 +35,23 @@ public class UserController {
   @Autowired
   private IOrderService orderService;
 
+  BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+
   @GetMapping("/registry")
   public String create(){
     return "user/registry";
   }
 
+  /**
+   * home method.
+   * @param user - user
+   * @return redirect.
+   */
   @PostMapping("/save")
   public String home(User user){
     LOGGER.info("Usuario enviado: {}",user);
     user.setTypeUser("USER");
+    user.setPassword(passwordEncoder.encode(user.getPassword()));
     userService.save(user);
 
     return "redirect:/";
@@ -73,7 +88,8 @@ public class UserController {
   public String getPurchases(Model model, HttpSession session){
     model.addAttribute("session", session.getAttribute("idUser"));
 
-    User user = userService.findById( Integer.parseInt(session.getAttribute("idUser").toString())).get();
+    User user = userService.findById(Integer.parseInt(session.getAttribute("idUser")
+            .toString())).get();
     List<Order> orderList = orderService.findByUser(user);
 
     model.addAttribute("orderList", orderList);
