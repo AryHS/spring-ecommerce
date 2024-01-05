@@ -63,11 +63,13 @@ public class UserController {
   }
 
 
-  @PostMapping("/signIn")
+  @GetMapping("/signIn")
   public String signIn(User user, HttpSession session){
     LOGGER.info("Accesos: {}",user);
 
-    Optional<User> userOptional = userService.findByEmail(user.getEmail());
+    Optional<User> userOptional =
+        userService.findById(Integer.parseInt(session.getAttribute("idUser").toString()));
+    //Optional<User> userOptional = userService.findByEmail(user.getEmail());
     //LOGGER.info("Usuario obtenido de db: {}",userOptional.get());
 
     if(userOptional.isPresent()){
