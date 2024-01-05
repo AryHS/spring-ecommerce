@@ -60,7 +60,7 @@
         <form class="form-inline my-2 my-lg-0" method="post"
               th:action="@{/search}">
           <input class="form-control mr-sm-2" type="search"
-                 placeholder="Buscar" aria-label="Search" name="nombre"
+                 placeholder="Buscar" aria-label="Search" name="name"
                  autocomplete="off">
           <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Buscar</button>
         </form>
@@ -69,7 +69,7 @@
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse" id="navbarResponsiveU">
+        <div class="collapse navbar-collapse" id="navbarResponsive">
           <ul class="navbar-nav ml-auto">
             <li class="nav-item dropdown"><a
                 class="nav-link dropdown-toggle" href="#"
@@ -77,8 +77,9 @@
                 aria-haspopup="true" aria-expanded="false"> USER </a>
               <div class="dropdown-menu"
                    aria-labelledby="navbarDropdownMenuLink">
-                <a class="dropdown-item" th:href="@{/user/purchases}">Compras</a>
+                <a class="dropdown-item" th:href="@{/user/purchases}">Mis Compras</a>
                 <a class="dropdown-item" th:href="@{/getCart}">Carrito</a>
+                <a class="dropdown-item" th:href="@{/user/signOut}">Cerrar Sesión</a>
               </div></li>
           </ul>
         </div>

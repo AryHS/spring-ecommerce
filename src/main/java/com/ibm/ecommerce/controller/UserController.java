@@ -53,7 +53,7 @@ public class UserController {
     LOGGER.info("Accesos: {}",user);
 
     Optional<User> userOptional = userService.findByEmail(user.getEmail());
-    LOGGER.info("Usuario obtenido de db: {}",userOptional.get());
+    //LOGGER.info("Usuario obtenido de db: {}",userOptional.get());
 
     if(userOptional.isPresent()){
       session.setAttribute("idUser", userOptional.get().getId());
@@ -92,5 +92,11 @@ public class UserController {
     model.addAttribute("session", session.getAttribute("idUser"));
 
     return "user/purchases_details";
+  }
+
+  @GetMapping("/signOut")
+  public String signOut(HttpSession session){
+    session.removeAttribute("idUser");
+    return "redirect:/";
   }
 }

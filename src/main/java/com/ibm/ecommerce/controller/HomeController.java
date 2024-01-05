@@ -52,16 +52,17 @@ public class HomeController {
 
     model.addAttribute("productList", productService.findAll());
     model.addAttribute("cart", summaryList);
-    LOGGER.info("Tamaño de la lista del Carrito: {}", summaryList.size());
+    //LOGGER.info("Tamaño de la lista del Carrito: {}", summaryList.size());
 
-    //Session
-    model.addAttribute("session", session.getAttribute("idUSer"));
+    //Session que se envía a la vista home. Se usa la variable 'sesion' para evitar conflictos
+    model.addAttribute("sesion", session.getAttribute("idUser"));
+    LOGGER.info("Sesión del usuario: {}", session.getAttribute("idUser"));
 
     return "user/home";
   }
   @GetMapping("showProduct/{id}")
   public String showProduct(@PathVariable Integer id, Model model){
-    LOGGER.info("Id producto enviado como parámetro {}", id);
+    //LOGGER.info("Id producto enviado como parámetro {}", id);
     Product product = productService.get(id).get();
     model.addAttribute("product", product);
     model.addAttribute("cart", summaryList);
@@ -76,8 +77,8 @@ public class HomeController {
     double total = 0;
 
     Optional<Product> productOptional = productService.get(id);
-    LOGGER.info("Producto añadido: {}", productOptional.get());
-    LOGGER.info("Cantidad: {}", cantity);
+    //LOGGER.info("Producto añadido: {}", productOptional.get());
+    //LOGGER.info("Cantidad: {}", cantity);
     product = productOptional.get();
 
     summary.setCantity(cantity);
@@ -132,8 +133,8 @@ public class HomeController {
     model.addAttribute("cart", summaryList);
     model.addAttribute("order", order);
 
-    //Session
-    model.addAttribute("session", session.getAttribute("idUser"));
+    //Session que se envía a la vista home. Se usa la variable 'sesion' para evitar conflictos
+    model.addAttribute("sesion", session.getAttribute("idUser"));
 
     return "/user/cart";
   }
