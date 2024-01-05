@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
 
-
 <head>
 
   <meta charset="utf-8">
@@ -24,18 +23,20 @@
 
   <!-- Navigation -->
   <div th:include="admin/template_admin.html::header"></div>
+
     <!-- Page Content -->
     <div class="container">
 
 
       <!-- Page Heading/Breadcrumbs -->
       <h1 class="mt-4 mb-3">
-        Spring eCommerce <small>Ordenes de Compras</small>
+        Spring eCommerce <small>Resumen de Compra</small>
       </h1>
 
       <ol class="breadcrumb">
         <li class="breadcrumb-item"><a th:href="@{/admin}">Home</a></li>
-        <li class="breadcrumb-item active">Ordenes</li>
+        <li class="breadcrumb-item"><a th:href="@{/admin/orders}">Ordenes</a></li>
+        <li class="breadcrumb-item active">Resumen de Compra</li>
       </ol>
 
       <!-- Blog Post -->
@@ -46,18 +47,18 @@
             <table class="table">
               <thead>
                 <tr>
-                  <th scope="col">No. de Orden</th>
-                  <th scope="col">Fecha</th>
-                  <th scope="col">Valor</th>
-                  <th scope="col">Acción</th>
+                  <th scope="col">Cantidad</th>
+                  <th scope="col">Producto</th>                  
+                  <th scope="col">Precio</th>
+                  <th scope="col">Total</th>                  
                 </tr>
               </thead>
               <tbody>
-                <tr th:each="order:${ordersList}">
-                  <td th:text="${order.numberOrder}"></td>
-                  <td th:text="${order.creationDate}"></td>
-                  <td th:text="${order.total}">Total</td>
-                  <td><a th:href="@{/admin/details/{id}  (id=${order.id}) }" class="btn btn-success">Ver Detalles</a></td>
+                <tr th:each="detail:${details}">
+                  <td th:text="${detail.cantity}">Cantidad</td>
+                  <td th:text="${detail.name}">Producto</td>
+                  <td th:text="${detail.price}">Precio</td>
+                  <td th:text="${detail.total}">Total</td>
                 </tr>
               </tbody>
             </table>
@@ -78,3 +79,4 @@
 </body>
 
 </html>
+
