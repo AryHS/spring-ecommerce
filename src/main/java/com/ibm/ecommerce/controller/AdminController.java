@@ -1,6 +1,7 @@
 package com.ibm.ecommerce.controller;
 
 import com.ibm.ecommerce.model.Product;
+import com.ibm.ecommerce.service.order.IOrderService;
 import com.ibm.ecommerce.service.product.ProductService;
 import com.ibm.ecommerce.service.user.IUserService;
 import java.util.List;
@@ -17,6 +18,8 @@ public class AdminController {
   private ProductService productService;
   @Autowired
   private IUserService userService;
+  @Autowired
+  private IOrderService orderService;
 
   @GetMapping("")
   public String home(Model model) {
@@ -30,5 +33,11 @@ public class AdminController {
     model.addAttribute("usersList", userService.findAll());
 
     return "admin/users";
+  }
+
+  @GetMapping("/orders")
+  public String orders(Model model){
+    model.addAttribute("ordersList", orderService.findAll());
+    return "admin/orders";
   }
 }
