@@ -1,6 +1,7 @@
 package com.ibm.ecommerce.service.order;
 
 import com.ibm.ecommerce.model.Order;
+import com.ibm.ecommerce.model.User;
 import com.ibm.ecommerce.repository.IOrderRepository;
 import java.util.ArrayList;
 import java.util.List;
@@ -42,5 +43,10 @@ public class OrderServiceImpl implements IOrderService{
 
 
     return parsedNumber;
+  }
+
+  @Override
+  public List<Order> findByUser(User user) {
+    return orderRepository.findByUser(user);
   }
 }

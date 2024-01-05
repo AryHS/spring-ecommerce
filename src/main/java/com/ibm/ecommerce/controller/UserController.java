@@ -1,7 +1,10 @@
 package com.ibm.ecommerce.controller;
 
+import com.ibm.ecommerce.model.Order;
 import com.ibm.ecommerce.model.User;
+import com.ibm.ecommerce.service.order.IOrderService;
 import com.ibm.ecommerce.service.user.IUserService;
+import java.util.List;
 import java.util.Optional;
 import javax.servlet.http.HttpSession;
 import org.slf4j.Logger;
@@ -20,6 +23,9 @@ public class UserController {
   private final Logger LOGGER = LoggerFactory.getLogger(UserController.class);
   @Autowired
   private IUserService userService;
+
+  @Autowired
+  private IOrderService orderService;
 
   @GetMapping("/registry")
   public String create(){
@@ -65,6 +71,11 @@ public class UserController {
   @GetMapping("/purchases")
   public String getPurchases(Model model, HttpSession session){
     model.addAttribute("session", session.getAttribute("idUser"));
+
+    User user = userService.findById( Integer.parseInt(session.getAttribute("idUser").toString())).get();
+    List<Order> orderList = orderService.findByUser(user);
+
+    model.addAttribute("orderList", orderList);
 
     return "user/purchases";
   }
